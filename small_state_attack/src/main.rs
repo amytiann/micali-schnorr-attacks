@@ -37,7 +37,7 @@ fn small_state_attack(n: usize, e: &BigUint) -> Option<BigUint> {
 
 /// Performs the improved small state attack.
 fn improved_small_state_attack(n: usize, e: &BigUint, m: u32) -> Option<BigUint> {
-    let r = (BigUint::from(n + usize::try_from(m * n.ilog2()).ok()?) / e).to_usize()?;
+    let r = (BigUint::from(n - 1 + usize::try_from(m * n.ilog2()).ok()?) / e).to_usize()?;
     let k = n - r;
     let mut msprg = State::new(n, e, k, Version::Ms91);
     println!("{msprg}");
