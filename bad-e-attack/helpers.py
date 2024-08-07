@@ -1,5 +1,5 @@
 import random, sys
-from sage.all import random_prime, Integer, random
+from sage.all import random_prime, Integer
 import sage.misc.randstate as randstate
 
 def is_valid_rsa(e, d, N):
