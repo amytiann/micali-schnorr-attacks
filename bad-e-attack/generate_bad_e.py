@@ -1,6 +1,4 @@
-import math, sys
-from sage.all import random_prime
-import sage.misc.randstate as randstate
+import math
 from helpers import *
 
 import multiprocessing 
@@ -24,6 +22,8 @@ def generate_vulnerable_e(security_parameter, key_length, p = None, q = None):
 	if (p == None or q == None):
 		p, q = generate_primes(key_length)
 
+	# When e is large, which is what we expect for d−1 mod φ(N) for d small,
+	# the ISO parameters set r = 2γ where γ is the security parameter.
 	r = 2 * security_parameter
 
 	valid_pairs = []
@@ -38,7 +38,7 @@ def generate_vulnerable_e(security_parameter, key_length, p = None, q = None):
 	e0_e1_upper_bound = (key_length // r) + 1
 	for e0 in range(1, e0_e1_upper_bound):
 		for e1 in range(1, e0_e1_upper_bound):
-			# Efficiently skip invalid e0 e1 not capture by the upper bound
+			# Efficiently skip invalid e0 e1 not captured by the upper bound
 			if not check_bound(e0, e1, key_length, r):
 				continue
 
@@ -59,7 +59,7 @@ def generate_vulnerable_e(security_parameter, key_length, p = None, q = None):
 
 def main():
 	# The values we used for generating samples
-	generate_pairs(1024, 80, 4, 4)
+	generate_pairs(1024, 80, 10000, 36)
 	# generate_pairs(2048, 112, 10000, 36)
 	# generate_pairs(3072, 128, 2000, 36)
 	# generate_pairs(7680, 192, 100, 36)
