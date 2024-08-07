@@ -1,6 +1,7 @@
 import math, sys
 from sage.all import random_prime
 import sage.misc.randstate as randstate
+from helpers import *
 
 import multiprocessing 
 
@@ -18,33 +19,6 @@ def generate_pairs(key_length, secparam, num_pq, num_threads):
 	print(f"Key length: {key_length}\nSecurity parameter: {secparam}\nNumber of tests: {num_pq}")
 	print(f"Average number of valid e0, e1, e: {average}")
 	print(f"Maximum number of valid e0, e1, e: {maximum}")
-
-def generate_primes(key_length):
-	randstate.set_random_seed()
-	sys.set_int_max_str_digits(0)
-	while True: 
-		max_prime_length = 2**(key_length // 2)
-		min_prime_length = 2**((key_length // 2) - 1)
-
-		p = random_prime(max_prime_length, True, min_prime_length)
-		q = random_prime(max_prime_length, True, min_prime_length)
-		
-		if p == q:
-			continue
-			
-		N = p * q
-		if N.nbits() == key_length:
-			break
-	return p, q
-
-def calculate_modular_inverse(e, phi_N):
-	try:
-		return pow(e, -1, phi_N)
-	except:
-		return False
-
-def check_bound(e0, e1, key_length, r):
-	return 2 * e0 + e1 * (e1 + 1) < (2 * key_length) / r
 
 def generate_vulnerable_e(security_parameter, key_length, p = None, q = None):
 	if (p == None or q == None):
@@ -85,7 +59,7 @@ def generate_vulnerable_e(security_parameter, key_length, p = None, q = None):
 
 def main():
 	# The values we used for generating samples
-	generate_pairs(1024, 80, 10000, 36)
+	generate_pairs(1024, 80, 4, 4)
 	# generate_pairs(2048, 112, 10000, 36)
 	# generate_pairs(3072, 128, 2000, 36)
 	# generate_pairs(7680, 192, 100, 36)
